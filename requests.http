@@ -1,0 +1,46 @@
+###
+# @name Ping
+GET http://localhost:3000/ping
+Accept: application/json
+
+###
+
+# @name Create User
+
+POST http://localhost:3000/users
+Accept: application/json
+
+{
+    "user": {
+        "name": "{{$random.alphabetic(10)}}",
+        "email": {{$random.email}}
+    }
+}
+
+###
+# @name Get user by id
+GET http://localhost:3000/users/1
+Accept: application/json
+
+
+###
+#@name Create URL
+POST http://localhost:3000/urls
+Accept: application/json
+
+{
+  "url": "http://example.com/{{$uuid}}",
+  "user_id": 1
+}
+
+> {%
+    client.log(response.body.short_url);
+    client.global.set("urlHash", response.body.short_url);
+%}
+
+
+###
+# @name Get URL by hash
+GET http://localhost:3000/{{urlHash}}
+Accept: application/json
+
